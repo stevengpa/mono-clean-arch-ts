@@ -1,35 +1,21 @@
 import * as E from "fp-ts/Either";
+
 import {
-  Pokemon_Name_001,
-  Pokemon_Name_002,
-  Pokemon_Name_003,
-} from "./PokemonErrors";
-import {
-  stringMax,
-  stringMin,
-  stringType,
-} from "../../../Global/Validations/StringValidations";
+  schemaValidatorAdapter,
+  schemaValidatorPort,
+} from "../../../Global/Validations/SchemaValidator";
 
 export type PokemonName = string;
 
-export function pokemonName(value: string): E.Either<Error, PokemonName> {
-  const validType = pokemonNameValidType(value);
-  if (E.isLeft(validType)) return validType;
+const PokemonNameSchema = {
+  type: "string",
+  minLength: 2,
+  maxLength: 20,
+};
 
-  const validMin = pokemonNameValidMin(value);
-  if (E.isLeft(validMin)) return validMin;
+export const pokemonNameInit =
+  (schemaValidator: schemaValidatorPort) =>
+  (value: string): E.Either<string[], PokemonName> =>
+    schemaValidator(PokemonNameSchema, "PokemonName", value);
 
-  const validMax = pokemonNameValidMax(value);
-  if (E.isLeft(validMax)) return validMax;
-
-  return E.right(value as PokemonName);
-}
-
-export const pokemonNameValidType = (value: string) =>
-  stringType(value, Pokemon_Name_001);
-
-export const pokemonNameValidMin = (value: string) =>
-  stringMin(value, 2, Pokemon_Name_002);
-
-export const pokemonNameValidMax = (value: string) =>
-  stringMax(value, 150, Pokemon_Name_003);
+export const pokemonName = pokemonNameInit(schemaValidatorAdapter);
