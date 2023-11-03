@@ -1,26 +1,35 @@
-import * as E from "fp-ts/Either";
+import { Either } from "fp-ts/Either";
+import { JSONSchemaType } from "ajv";
 
 import {
   schemaValidatorAdapter,
   schemaValidatorPort,
-} from "../../../Global/Validations/SchemaValidator";
+  PokemonError,
+  PokemonErrorInput,
+} from "../../../Global";
 
 export type PokemonBaseExperience = number;
 
-const PokemonBaseExperienceSchema = {
+const PokemonBaseExperienceSchema: JSONSchemaType<number> = {
   type: "integer",
   minimum: 1,
   maximum: 20,
 };
 
-export const pokemonBaseExperienceInit =
-  (schemaValidator: schemaValidatorPort) =>
-  (value: number): E.Either<string[], PokemonBaseExperience> =>
-    schemaValidator<PokemonBaseExperience>(
+const POKEMON_BASE_EXPERIENCE_ERROR: PokemonErrorInput = {
+  code: "Pokemon_Base_Experience",
+  message: "Invalid pokemon base experience",
+};
+
+export const pokemonBaseExperienceConnector =
+  (schemaValidatorPort: schemaValidatorPort) =>
+  (value: number): Either<PokemonError, PokemonBaseExperience> =>
+    schemaValidatorPort<PokemonBaseExperience>(
       PokemonBaseExperienceSchema,
-      "PokemonBaseExperience",
+      POKEMON_BASE_EXPERIENCE_ERROR,
       value,
     );
-export const pokemonBaseExperience = pokemonBaseExperienceInit(
+
+export const pokemonBaseExperience = pokemonBaseExperienceConnector(
   schemaValidatorAdapter,
 );

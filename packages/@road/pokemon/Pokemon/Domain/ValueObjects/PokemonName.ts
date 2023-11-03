@@ -1,21 +1,33 @@
-import * as E from "fp-ts/Either";
+import { Either } from "fp-ts/Either";
+import { JSONSchemaType } from "ajv";
 
 import {
   schemaValidatorAdapter,
   schemaValidatorPort,
-} from "../../../Global/Validations/SchemaValidator";
+  PokemonError,
+  PokemonErrorInput,
+} from "../../../Global";
 
 export type PokemonName = string;
 
-const PokemonNameSchema = {
+const PokemonNameSchema: JSONSchemaType<string> = {
   type: "string",
   minLength: 2,
   maxLength: 20,
 };
 
-export const pokemonNameInit =
-  (schemaValidator: schemaValidatorPort) =>
-  (value: string): E.Either<string[], PokemonName> =>
-    schemaValidator(PokemonNameSchema, "PokemonName", value);
+const POKEMON_NAME_ERROR: PokemonErrorInput = {
+  code: "Pokemon_Name",
+  message: "Invalid pokemon name",
+};
 
-export const pokemonName = pokemonNameInit(schemaValidatorAdapter);
+export const pokemonNameConnector =
+  (schemaValidatorPort: schemaValidatorPort) =>
+  (value: string): Either<PokemonError, PokemonName> =>
+    schemaValidatorPort<PokemonName>(
+      PokemonNameSchema,
+      POKEMON_NAME_ERROR,
+      value,
+    );
+
+export const pokemonName = pokemonNameConnector(schemaValidatorAdapter);

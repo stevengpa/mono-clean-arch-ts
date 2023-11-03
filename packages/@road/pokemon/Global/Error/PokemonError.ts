@@ -1,14 +1,27 @@
-import { ErrorObject } from "ajv";
-
-export type PokemonErrorInputs = {
+export type PokemonErrorInput = {
   code: string;
   message: string;
+  metadata?: PokemonErrorMetaData;
 };
 
-export function pokemonError(inputs: Object): Error {
-  return new Error(JSON.stringify(inputs));
-}
+export type PokemonErrorMetaData = {
+  errors?: string[];
+  statusCode?: number;
+};
 
-export function pokemonErrors(key: string, errors: ErrorObject[]): string[] {
-  return errors.map((error: ErrorObject) => `[${key}]: ${error.message}`);
+export class PokemonError extends Error {
+  message: string = "";
+  code: string = "";
+  metadata: PokemonErrorMetaData = {};
+
+  static new(input: PokemonErrorInput): PokemonError {
+    const pokemonError = new PokemonError();
+    pokemonError.message = input.message;
+    pokemonError.code = input.code;
+    pokemonError.metadata = input?.metadata ?? {};
+
+    Error.captureStackTrace(this);
+
+    return pokemonError;
+  }
 }

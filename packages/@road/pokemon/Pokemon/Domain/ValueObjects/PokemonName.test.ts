@@ -1,5 +1,5 @@
 import { test, expect, describe } from "bun:test";
-import * as E from "fp-ts/Either";
+import { isRight, isLeft } from "fp-ts/Either";
 
 import { pokemonName } from "./PokemonName";
 
@@ -10,7 +10,7 @@ describe("PokemonName", () => {
         const _value = value as unknown as string;
         const result = pokemonName(_value);
 
-        expect(E.isLeft(result)).toBe(true);
+        expect(isLeft(result)).toBe(true);
       });
     },
   );
@@ -20,7 +20,7 @@ describe("PokemonName", () => {
       test(`should be ok when value is ${value}`, () => {
         const result = pokemonName(value);
 
-        expect(E.isRight(result)).toBe(true);
+        expect(isRight(result)).toBe(true);
       });
     },
   );
