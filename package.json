@@ -11,11 +11,13 @@
   "author": "",
   "license": "ISC",
   "workspaces": [
-    "packages/@road/pokemon",
-    "packages/@road/pokemon-be",
-    "packages/@road/pokemon-fe"
+    "packages/*"
   ],
   "dependencies": {
     "fp-ts": "^2.16.1"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.3",
+    "@road/pokemon": "workspace:*"
   }
 }

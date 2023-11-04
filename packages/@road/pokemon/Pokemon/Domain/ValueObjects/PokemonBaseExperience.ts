@@ -2,11 +2,11 @@ import { Either } from "fp-ts/Either";
 import { JSONSchemaType } from "ajv";
 
 import {
-  schemaValidatorAdapter,
-  schemaValidatorPort,
   PokemonError,
   PokemonErrorInput,
-} from "../../../Global";
+} from "../../../Global/Error/PokemonError";
+import { schemaValidatorAdapter } from "../../../Global/Validations/SchemaValidator";
+import { SchemaValidatorPort } from "../../../Global/Validations/SchemaValidatorPorts";
 
 export type PokemonBaseExperience = number;
 
@@ -22,7 +22,7 @@ const POKEMON_BASE_EXPERIENCE_ERROR: PokemonErrorInput = {
 };
 
 export const pokemonBaseExperienceConnector =
-  (schemaValidatorPort: schemaValidatorPort) =>
+  (schemaValidatorPort: SchemaValidatorPort) =>
   (value: number): Either<PokemonError, PokemonBaseExperience> =>
     schemaValidatorPort<PokemonBaseExperience>(
       PokemonBaseExperienceSchema,

@@ -4,7 +4,6 @@ import { Either, right, left } from "fp-ts/Either";
 import { convertToPokemonError } from "./convertToPokemonError";
 import { PokemonError } from "../Error/PokemonError";
 
-export type httpGetPort = <T>(url: string) => Either<Error, Promise<T>>;
 export async function httpGetAdapter<T>(
   url: string,
 ): Promise<Either<PokemonError, T>> {

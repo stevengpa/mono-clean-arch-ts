@@ -19,6 +19,6 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@road/pokemon": "^1.0.0"
+    "@road/pokemon": "workspace:*"
   }
 }

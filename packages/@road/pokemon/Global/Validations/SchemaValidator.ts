@@ -5,12 +5,6 @@ import { PokemonError, PokemonErrorInput } from "../Error/PokemonError";
 
 const ajv = new Ajv();
 
-export type schemaValidatorPort = <T>(
-  schema: Record<string, unknown>,
-  errorInput: PokemonErrorInput,
-  value: T,
-) => Either<PokemonError, T>;
-
 export function schemaValidatorAdapter<T>(
   schema: Record<string, unknown>,
   errorInput: PokemonErrorInput,

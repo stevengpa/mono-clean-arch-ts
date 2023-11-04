@@ -1,12 +1,11 @@
 import { Either } from "fp-ts/Either";
 import { JSONSchemaType } from "ajv";
-
 import {
-  schemaValidatorAdapter,
-  schemaValidatorPort,
   PokemonError,
   PokemonErrorInput,
-} from "../../../Global";
+} from "../../../Global/Error/PokemonError";
+import { SchemaValidatorPort } from "../../../Global/Validations/SchemaValidatorPorts";
+import { schemaValidatorAdapter } from "../../../Global/Validations/SchemaValidator";
 
 export type PokemonId = number;
 
@@ -22,7 +21,7 @@ const POKEMON_ID_ERROR: PokemonErrorInput = {
 };
 
 export const pokemonIdConnector =
-  (schemaValidatorPort: schemaValidatorPort) =>
+  (schemaValidatorPort: SchemaValidatorPort) =>
   (value: number): Either<PokemonError, PokemonId> =>
     schemaValidatorPort<PokemonId>(PokemonIdSchema, POKEMON_ID_ERROR, value);
 

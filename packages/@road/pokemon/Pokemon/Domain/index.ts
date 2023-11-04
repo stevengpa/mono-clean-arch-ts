@@ -1,1 +1,1 @@
-export * as ValueObjects from "./ValueObjects";
+export * from "./ValueObjects";
